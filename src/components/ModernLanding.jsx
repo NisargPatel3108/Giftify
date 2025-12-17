@@ -29,13 +29,13 @@ const ModernLanding = () => {
       
       {/* Navigation */}
       <nav className="glass-nav interactive" style={{ background: 'rgba(255,255,255,0.85)' }}>
-        <Magnetic>
-            <div className="logo interactive" style={{ cursor: 'pointer' }}>Giftify.</div>
+        <Magnetic strength={0.8}>
+            <div className="logo interactive" style={{ cursor: 'pointer', padding: '10px' }}>Giftify.</div>
         </Magnetic>
         <div className="nav-links">
-            <button className="nav-item interactive">For Creators</button>
-            <button className="nav-item interactive">For Fans</button>
-            <button className="btn-small interactive">Get Started</button>
+            <Magnetic strength={0.4}><button className="nav-item interactive">For Creators</button></Magnetic>
+            <Magnetic strength={0.4}><button className="nav-item interactive">For Fans</button></Magnetic>
+            <Magnetic strength={0.6}><button className="btn-small interactive">Get Started</button></Magnetic>
         </div>
       </nav>
 

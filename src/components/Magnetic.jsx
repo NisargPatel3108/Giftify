@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 
-const Magnetic = ({ children }) => {
+const Magnetic = ({ children, strength = 0.5 }) => {
     const ref = useRef(null)
     const [position, setPosition] = useState({ x: 0, y: 0 })
 
@@ -18,7 +18,7 @@ const Magnetic = ({ children }) => {
         const y = clientY - centerY
         
         // Move element (magnetic effect strength)
-        setPosition({ x: x * 0.3, y: y * 0.3 })
+        setPosition({ x: x * strength, y: y * strength })
     }
 
     const reset = () => {
