@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import DashboardLayout from '../components/DashboardLayout'
 import { Package, DollarSign, TrendingUp, Clock, Eye } from 'lucide-react'
 
@@ -17,8 +17,22 @@ const CreatorDashboard = () => {
     { id: 4, item: 'Gaming Mouse', fan: '@gamer123', date: '1 day ago', status: 'Delivered', price: '$89' },
   ]
 
+  const [user, setUser] = useState(null)
+  
+  React.useEffect(() => {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) setUser(JSON.parse(storedUser));
+  }, []);
+
   return (
     <DashboardLayout role="creator">
+       {/* Welcome Header */}
+       <div style={{ marginBottom: '2rem' }}>
+            <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>
+                High Five, {user ? user.firstName : 'Creator'}! 🚀
+            </h1>
+            <p style={{ color: '#64748B' }}>Here's what's happening just now.</p>
+        </div>
        {/* Stats Grid */}
        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
            {stats.map((stat, i) => {

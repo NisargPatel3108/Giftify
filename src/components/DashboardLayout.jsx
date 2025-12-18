@@ -1,10 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'wouter'
 import { motion } from 'framer-motion'
 import { Home, Gift, Settings, LogOut, User, Heart, Package } from 'lucide-react'
 
 const DashboardLayout = ({ children, role = 'fan' }) => {
   const [location] = useLocation()
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+        setUser(JSON.parse(storedUser));
+    }
+  }, []);
   
   const fanLinks = [
     { icon: Home, label: 'Discover', path: '/dashboard/fan' },
@@ -48,8 +56,10 @@ const DashboardLayout = ({ children, role = 'fan' }) => {
                     const isActive = location === link.path
                     const Icon = link.icon
                     return (
-                        <Link key={link.path} href={link.path}>
-                            <a style={{ 
+                        <Link 
+                            key={link.path} 
+                            href={link.path}
+                            style={{ 
                                 display: 'flex', 
                                 alignItems: 'center', 
                                 gap: '1rem',
@@ -61,10 +71,10 @@ const DashboardLayout = ({ children, role = 'fan' }) => {
                                 fontWeight: isActive ? 600 : 500,
                                 transition: 'all 0.2s',
                                 cursor: 'pointer'
-                            }}>
-                                <Icon size={20} />
-                                {link.label}
-                            </a>
+                            }}
+                        >
+                            <Icon size={20} />
+                            {link.label}
                         </Link>
                     )
                 })}
@@ -76,9 +86,13 @@ const DashboardLayout = ({ children, role = 'fan' }) => {
                 <div style={{ width: 40, height: 40, borderRadius: '50%', background: role === 'creator' ? '#DBEAFE' : '#FCE7F3', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>
                     {role === 'creator' ? '🦁' : '🦄'}
                 </div>
-                <div>
-                    <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{role === 'creator' ? 'Alex Creator' : 'Sarah Fan'}</div>
-                    <div style={{ fontSize: '0.8rem', color: '#94A3B8' }}>{role === 'creator' ? '@alex' : '@sarah'}</div>
+                <div style={{ overflow: 'hidden' }}>
+                    <div style={{ fontWeight: 600, fontSize: '0.9rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {user ? `${user.firstName} ${user.lastName}` : (role === 'creator' ? 'Alex Creator' : 'Sarah Fan')}
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#94A3B8' }}>
+                         @{user ? user.firstName.toLowerCase() : (role === 'creator' ? 'alex' : 'sarah')}
+                    </div>
                 </div>
             </div>
             

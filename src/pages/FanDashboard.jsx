@@ -19,8 +19,22 @@ const FanDashboard = () => {
     ? creators 
     : creators.filter(c => c.category === activeCat)
 
+  const [user, setUser] = useState(null)
+  
+  React.useEffect(() => {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) setUser(JSON.parse(storedUser));
+  }, []);
+
   return (
     <DashboardLayout role="fan">
+        {/* Welcome Header */}
+        <div style={{ marginBottom: '2rem' }}>
+            <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>
+                Welcome back, {user ? user.firstName : 'Super Fan'}! 👋
+            </h1>
+            <p style={{ color: '#64748B' }}>Discover creators and send love instantly.</p>
+        </div>
         {/* Search & Filter */}
         <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
             <div style={{ position: 'relative', flex: 1 }}>

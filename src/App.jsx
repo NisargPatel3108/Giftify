@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import FanDashboard from './pages/FanDashboard'
 import CreatorDashboard from './pages/CreatorDashboard'
+import AdminDashboard from './pages/AdminDashboard'
 import './index.css'
 import './refined_theme.css'
 
@@ -12,6 +13,7 @@ function App() {
   return (
     <Switch>
       <Route path="/" component={ModernLanding} />
+      <Route path="/admin" component={AdminDashboard} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       <Route path="/dashboard/fan" component={FanDashboard} />

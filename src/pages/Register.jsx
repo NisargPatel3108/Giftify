@@ -7,10 +7,33 @@ import '../refined_theme.css'
 const Register = () => {
     const [, setLocation] = useLocation();
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
-        // Simulate registration
-        setLocation('/login');
+        
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Registration success:', result);
+                setLocation('/login');
+            } else {
+                const error = await response.json();
+                alert(error.message || 'Registration failed');
+            }
+        } catch (err) {
+            console.error('Registration error:', err);
+            alert('An error occurred. Please try again.');
+        }
     }
 
     return (
@@ -35,48 +58,50 @@ const Register = () => {
                     className="glass-dashboard"
                     style={{
                         maxWidth: '450px',
-                        padding: '2rem',
+                        width: '100%',
+                        padding: '2.5rem',
                         borderRadius: '24px',
                         transform: 'none',
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '1.5rem',
-                        margin: '1rem'
+                        margin: '1rem',
+                        boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
                     }}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.4 }}
                 >
-                    <div style={{ textAlign: 'center' }}>
-                        <h2 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '0.5rem' }}>Join Giftify</h2>
-                        <p style={{ color: 'var(--c-text-muted)' }}>Start sending or receiving gifts securely</p>
+                    <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+                        <h2 style={{ fontSize: '2.2rem', fontWeight: 800, marginBottom: '0.5rem', background: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Join Giftify</h2>
+                        <p style={{ color: '#64748B', fontSize: '1.05rem' }}>Create your account to get started</p>
                     </div>
 
                     <form style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} onSubmit={handleRegister}>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                             <div>
                                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500, fontSize: '0.9rem' }}>First Name</label>
-                                <input type="text" placeholder="Jane" className="newsletter-input" required />
+                                <input type="text" name="firstName" placeholder="Jane" className="newsletter-input" required />
                             </div>
                             <div>
                                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500, fontSize: '0.9rem' }}>Last Name</label>
-                                <input type="text" placeholder="Doe" className="newsletter-input" required />
+                                <input type="text" name="lastName" placeholder="Doe" className="newsletter-input" required />
                             </div>
                         </div>
 
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500, fontSize: '0.9rem' }}>Email</label>
-                            <input type="email" placeholder="you@example.com" className="newsletter-input" required />
+                            <input type="email" name="email" placeholder="you@example.com" className="newsletter-input" required />
                         </div>
 
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500, fontSize: '0.9rem' }}>Password</label>
-                            <input type="password" placeholder="••••••••" className="newsletter-input" required />
+                            <input type="password" name="password" placeholder="••••••••" className="newsletter-input" required />
                         </div>
 
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500, fontSize: '0.9rem' }}>I am a...</label>
-                            <select className="newsletter-input" style={{ width: '100%' }}>
+                            <select name="role" className="newsletter-input" style={{ width: '100%' }}>
                                 <option value="fan">Fan (I want to send gifts)</option>
                                 <option value="creator">Creator (I want to receive gifts)</option>
                             </select>
