@@ -9,18 +9,24 @@ const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const fetchUsers = () => {
+    const fetchUsers = async () => {
         setLoading(true);
-        fetch('/api/users')
-            .then(res => res.json())
-            .then(data => {
-                setUsers(data);
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error("Failed to fetch users", err);
-                setLoading(false);
-            });
+        try {
+            const { collection, getDocs } = await import('firebase/firestore');
+            const { db } = await import('../firebase');
+            
+            const querySnapshot = await getDocs(collection(db, "users"));
+            const usersList = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            
+            setUsers(usersList);
+            setLoading(false);
+        } catch (err) {
+            console.error("Failed to fetch users", err);
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -31,21 +37,15 @@ const AdminDashboard = () => {
         if (!confirm(`Are you sure you want to change this user's role to ${newRole}?`)) return;
 
         try {
-            const res = await fetch(`/api/users/${userId}/role`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ role: newRole })
-            });
+            const { doc, updateDoc } = await import('firebase/firestore');
+            const { db } = await import('../firebase');
             
-            if (res.ok) {
-                fetchUsers(); // Refresh list
-            } else {
-                alert('Failed to update role');
-            }
+            const userRef = doc(db, "users", userId);
+            await updateDoc(userRef, { role: newRole });
+            
+            fetchUsers(); // Refresh list
         } catch (error) {
-            console.error(error);
+            console.error('Error updating role:', error);
             alert('Error updating role');
         }
     };

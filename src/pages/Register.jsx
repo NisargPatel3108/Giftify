@@ -14,25 +14,41 @@ const Register = () => {
         const data = Object.fromEntries(formData.entries());
 
         try {
-            const response = await fetch('/api/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
+            // Import dynamically to ensure firebase is initialized
+            const { createUserWithEmailAndPassword, updateProfile } = await import('firebase/auth');
+            const { doc, setDoc } = await import('firebase/firestore');
+            const { auth, db } = await import('../firebase');
+
+            // 1. Create User in Auth
+            const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+            const user = userCredential.user;
+
+            // 2. Update Display Name
+            await updateProfile(user, {
+                displayName: `${data.firstName} ${data.lastName}`
             });
 
-            if (response.ok) {
-                const result = await response.json();
-                console.log('Registration success:', result);
-                setLocation('/login');
-            } else {
-                const error = await response.json();
-                alert(error.message || 'Registration failed');
-            }
+            // 3. Store Role & Details in Firestore
+            const userData = {
+                firstName: data.firstName,
+                lastName: data.lastName,
+                email: data.email,
+                role: data.role,
+                createdAt: new Date().toISOString()
+            };
+
+            await setDoc(doc(db, "users", user.uid), userData);
+
+            console.log('Registration success:', user);
+            alert('Account created successfully! Please sign in.');
+            setLocation('/login');
+
         } catch (err) {
             console.error('Registration error:', err);
-            alert('An error occurred. Please try again.');
+            let msg = 'Registration failed.';
+            if (err.code === 'auth/email-already-in-use') msg = 'Email already in use.';
+            if (err.code === 'auth/weak-password') msg = 'Password should be at least 6 characters.';
+            alert(msg);
         }
     }
 

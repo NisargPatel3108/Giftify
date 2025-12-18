@@ -13,34 +13,42 @@ const Login = () => {
         const data = Object.fromEntries(formData.entries());
 
         try {
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
+            const { signInWithEmailAndPassword } = await import('firebase/auth');
+            const { doc, getDoc } = await import('firebase/firestore');
+            const { auth, db } = await import('../firebase');
 
-            if (response.ok) {
-                const result = await response.json();
-                console.log('Login success:', result);
+            // 1. Sign In
+            const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
+            const user = userCredential.user;
+
+            // 2. Fetch User Role from Firestore
+            const docRef = doc(db, "users", user.uid);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const userData = docSnap.data();
+                console.log('Login success:', userData);
                 
-                // Save user info
-                localStorage.setItem('user', JSON.stringify(result.user));
+                // Save complete user info locally for dashboards
+                localStorage.setItem('user', JSON.stringify({ 
+                    uid: user.uid,
+                    ...userData 
+                }));
 
                 // Redirect based on role
-                if (result.user.role === 'creator') {
+                if (userData.role === 'creator') {
                     setLocation('/dashboard/creator');
                 } else {
                     setLocation('/dashboard/fan');
                 }
             } else {
-                const error = await response.json();
-                alert(error.message || 'Login failed');
+                console.error("No such user document!");
+                alert("User profile not found. Please contact support.");
             }
+
         } catch (err) {
             console.error('Login error:', err);
-            alert('An error occurred. Please try again.');
+            alert('Invalid email or password.');
         }
     }
 
