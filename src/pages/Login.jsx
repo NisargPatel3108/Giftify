@@ -40,53 +40,54 @@ const Login = () => {
             transition={{ duration: 0.6 }}
         >
             <div style={{ textAlign: 'center' }}>
-                <h2 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '0.5rem' }}>Welcome Back</h2>
-                <p style={{ color: 'var(--c-text-muted)' }}>Sign in to manage your gifts</p>
+                <h2 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '0.5rem' }}>Experience Giftify</h2>
+                <p style={{ color: 'var(--c-text-muted)' }}>Choose a role to explore the platform demo</p>
             </div>
 
-            <form style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} onSubmit={(e) => e.preventDefault()}>
-                <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500, fontSize: '0.9rem' }}>Email</label>
-                    <input 
-                        type="email" 
-                        placeholder="you@example.com" 
-                        className="newsletter-input" 
-                        style={{ width: '100%', boxSizing: 'border-box' }}
-                    />
-                </div>
-                <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500, fontSize: '0.9rem' }}>Password</label>
-                    <input 
-                        type="password" 
-                        placeholder="••••••••" 
-                        className="newsletter-input" 
-                        style={{ width: '100%', boxSizing: 'border-box' }}
-                    />
-                </div>
-                
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85rem' }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                        <input type="checkbox" /> Remember me
-                    </label>
-                    <a href="#" style={{ color: 'var(--accent-blue)', textDecoration: 'none' }}>Forgot password?</a>
-                </div>
+            <div style={{ display: 'grid', gap: '1rem' }}>
+                <Link href="/dashboard/fan">
+                    <button 
+                        className="interactive"
+                        style={{ 
+                            width: '100%',
+                            padding: '1.5rem', 
+                            background: '#F0F9FF', 
+                            border: '2px solid #BAE6FD', 
+                            borderRadius: '16px',
+                            cursor: 'pointer',
+                            textAlign: 'left',
+                            transition: 'all 0.2s'
+                        }}
+                    >
+                        <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🦄</div>
+                        <div style={{ fontWeight: 700, color: '#0369A1', fontSize: '1.1rem' }}>Login as Fan</div>
+                        <div style={{ fontSize: '0.9rem', color: '#64748B' }}>Browse creators and send secure gifts</div>
+                    </button>
+                </Link>
 
-                <button 
-                    className="btn-primary interactive" 
-                    style={{ 
-                        background: 'var(--grad-primary)', 
-                        border: 'none', 
-                        padding: '12px', 
-                        marginTop: '1rem',
-                        width: '100%' 
-                    }}
-                >
-                    Sign In
-                </button>
-            </form>
+                <Link href="/dashboard/creator">
+                    <button 
+                        className="interactive"
+                        style={{ 
+                            width: '100%',
+                            padding: '1.5rem', 
+                            background: '#F0FDF4', 
+                            border: '2px solid #BBF7D0', 
+                            borderRadius: '16px',
+                            cursor: 'pointer',
+                            textAlign: 'left',
+                            transition: 'all 0.2s'
+                        }}
+                    >
+                        <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🦁</div>
+                        <div style={{ fontWeight: 700, color: '#15803D', fontSize: '1.1rem' }}>Login as Creator</div>
+                        <div style={{ fontSize: '0.9rem', color: '#64748B' }}>Manage inventory and analytics</div>
+                    </button>
+                </Link>
+            </div>
 
-            <div style={{ textAlign: 'center', fontSize: '0.9rem', color: 'var(--c-text-muted)', marginTop: '1rem' }}>
-                Don't have an account? <a href="#" style={{ color: 'var(--accent-blue)', textDecoration: 'none', fontWeight: 600 }}>Sign up</a>
+            <div style={{ textAlign: 'center', fontSize: '0.8rem', color: '#94A3B8', marginTop: '1rem' }}>
+                * This is a demo mode connected to mock APIs
             </div>
         </motion.div>
       </div>

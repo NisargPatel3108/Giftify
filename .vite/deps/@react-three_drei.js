@@ -1,4 +1,10 @@
 import {
+  require_shim
+} from "./chunk-Q6Q7WIPF.js";
+import {
+  require_client
+} from "./chunk-EKBCEYYD.js";
+import {
   addAfterEffect,
   addEffect,
   applyProps,
@@ -14,9 +20,6 @@ import {
   useThree
 } from "./chunk-YOK7HNZS.js";
 import "./chunk-J3GJSMK3.js";
-import {
-  require_client
-} from "./chunk-EKBCEYYD.js";
 import {
   require_react
 } from "./chunk-32E4H3EV.js";
@@ -1063,82 +1066,6 @@ var require_prop_types = __commonJS({
     }
     var ReactIs;
     var throwOnDirectAccess;
-  }
-});
-
-// node_modules/use-sync-external-store/cjs/use-sync-external-store-shim.development.js
-var require_use_sync_external_store_shim_development = __commonJS({
-  "node_modules/use-sync-external-store/cjs/use-sync-external-store-shim.development.js"(exports2) {
-    "use strict";
-    (function() {
-      function is2(x, y) {
-        return x === y && (0 !== x || 1 / x === 1 / y) || x !== x && y !== y;
-      }
-      function useSyncExternalStore$2(subscribe, getSnapshot) {
-        didWarnOld18Alpha || void 0 === React134.startTransition || (didWarnOld18Alpha = true, console.error(
-          "You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."
-        ));
-        var value = getSnapshot();
-        if (!didWarnUncachedGetSnapshot) {
-          var cachedValue = getSnapshot();
-          objectIs(value, cachedValue) || (console.error(
-            "The result of getSnapshot should be cached to avoid an infinite loop"
-          ), didWarnUncachedGetSnapshot = true);
-        }
-        cachedValue = useState62({
-          inst: { value, getSnapshot }
-        });
-        var inst = cachedValue[0].inst, forceUpdate = cachedValue[1];
-        useLayoutEffect57(
-          function() {
-            inst.value = value;
-            inst.getSnapshot = getSnapshot;
-            checkIfSnapshotChanged(inst) && forceUpdate({ inst });
-          },
-          [subscribe, value, getSnapshot]
-        );
-        useEffect60(
-          function() {
-            checkIfSnapshotChanged(inst) && forceUpdate({ inst });
-            return subscribe(function() {
-              checkIfSnapshotChanged(inst) && forceUpdate({ inst });
-            });
-          },
-          [subscribe]
-        );
-        useDebugValue2(value);
-        return value;
-      }
-      function checkIfSnapshotChanged(inst) {
-        var latestGetSnapshot = inst.getSnapshot;
-        inst = inst.value;
-        try {
-          var nextValue = latestGetSnapshot();
-          return !objectIs(inst, nextValue);
-        } catch (error) {
-          return true;
-        }
-      }
-      function useSyncExternalStore$1(subscribe, getSnapshot) {
-        return getSnapshot();
-      }
-      "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-      var React134 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is2, useState62 = React134.useState, useEffect60 = React134.useEffect, useLayoutEffect57 = React134.useLayoutEffect, useDebugValue2 = React134.useDebugValue, didWarnOld18Alpha = false, didWarnUncachedGetSnapshot = false, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
-      exports2.useSyncExternalStore = void 0 !== React134.useSyncExternalStore ? React134.useSyncExternalStore : shim;
-      "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
-    })();
-  }
-});
-
-// node_modules/use-sync-external-store/shim/index.js
-var require_shim = __commonJS({
-  "node_modules/use-sync-external-store/shim/index.js"(exports2, module2) {
-    "use strict";
-    if (false) {
-      module2.exports = null;
-    } else {
-      module2.exports = require_use_sync_external_store_shim_development();
-    }
   }
 });
 
@@ -106757,17 +106684,6 @@ object-assign/index.js:
   (c) Sindre Sorhus
   @license MIT
   *)
-
-use-sync-external-store/cjs/use-sync-external-store-shim.development.js:
-  (**
-   * @license React
-   * use-sync-external-store-shim.development.js
-   *
-   * Copyright (c) Meta Platforms, Inc. and affiliates.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   *)
 
 use-sync-external-store/cjs/use-sync-external-store-shim/with-selector.development.js:
   (**
