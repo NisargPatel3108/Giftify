@@ -55,7 +55,19 @@ const Login = () => {
             }
 
         } catch (err) {
-            addToast(err.code === 'auth/invalid-credential' ? 'Invalid email or password.' : `Login failed: ${err.message}`, 'error');
+            console.error("Login Error Details:", err);
+            
+            let message = `Login failed: ${err.message}`;
+            
+            if (err.message && err.message.includes("Failed to fetch")) {
+                message = "Network Error: Please disable AdBlockers or strict privacy protections (Brave Shields) for this site.";
+            } else if (err.code === 'auth/invalid-credential') {
+                message = "Invalid email or password.";
+            } else if (err.code === 'unavailable') {
+                message = "Service unavailable. Check your internet connection.";
+            }
+
+            addToast(message, 'error');
             setLoading(false);
         }
     }

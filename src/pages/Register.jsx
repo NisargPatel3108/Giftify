@@ -49,9 +49,19 @@ const Register = () => {
             setLocation('/login');
 
         } catch (err) {
+            console.error("Registration Error:", err);
+            
             let msg = 'Registration failed.';
-            if (err.code === 'auth/email-already-in-use') msg = 'Email already in use.';
-            if (err.code === 'auth/weak-password') msg = 'Password should be at least 6 characters.';
+            if (err.message && err.message.includes("Failed to fetch")) {
+                msg = "Network Error: Please disable AdBlockers or strict privacy protections.";
+            } else if (err.code === 'auth/email-already-in-use') {
+                msg = 'Email already in use.';
+            } else if (err.code === 'auth/weak-password') {
+                msg = 'Password should be at least 6 characters.';
+            } else if (err.code === 'unavailable') {
+                msg = 'Service timeout. Check your network or AdBlocker.';
+            }
+
             addToast(msg, 'error');
             setLoading(false);
         }
