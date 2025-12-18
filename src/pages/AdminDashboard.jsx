@@ -19,7 +19,7 @@ const AdminDashboard = () => {
             
             // Timeout the fetch so we don't wait forever
             const fetchPromise = getDocs(collection(db, "users"));
-            const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 2000));
+            const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 10000));
             
             const querySnapshot = await Promise.race([fetchPromise, timeoutPromise]);
             
